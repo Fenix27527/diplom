@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="PersonelRecords.Views.StateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PersonelRecords.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="30"/>
+            <!-- текст -->
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <!-- фон -->
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                        <GradientStop Color="#b03434" Offset="0.0"/>
+                        <GradientStop Color="#ca9291" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <!-- обводка -->
+            <Setter Property="BorderBrush" Value="#360300"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                         BorderBrush="{TemplateBinding BorderBrush}"
+                         BorderThickness="{TemplateBinding BorderThickness}"
+                         CornerRadius="5"
+                         SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Source="/Resources/bg/bgState.jpg" Height="Auto" Width="Auto" Grid.ColumnSpan="3" Grid.RowSpan="6" Stretch="UniformToFill"/>
+        <DataGrid AutoGenerateColumns="False" x:Name="TABLEState" Grid.Row="1" CanUserAddRows="True" Grid.ColumnSpan="3" Opacity="0.7" Background="Gray" FontWeight="Bold">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}" IsReadOnly="True" Header="Номер" Width="0.5*"/>
+                <DataGridTextColumn Binding="{Binding Division}" Header="Подразделение" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Post}" Header="Должность" Width="*"/>
+                <DataGridTextColumn Binding="{Binding NumberOfWorkers}" Header="Кол-во сотрудников" Width="*"/>
+                <DataGridTextColumn Binding="{Binding NumberOfHours}" Header="Кол-во рабочих часов" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Salary}" Header="Тарифная ставка, руб" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="ButBack" Content="Назад"  Style="{StaticResource ButtonStyle}" Click="ButBack_Click"/>
+        <Button x:Name="ButUpd" Content="Обновить" Grid.Row="2"  Style="{StaticResource ButtonStyle}" Click="ButUpd_Click"/>
+        <Button x:Name="ButDel" Content="Удалить" Grid.Row="2" Grid.Column="1"  Style="{StaticResource ButtonStyle}" Click="ButDel_Click"/>
+        <StackPanel  Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBox x:Name="TbSearch" Width="300" Height="30"/>
+            <Button x:Name="ButSearch" Content="Поиск" Margin="10 0 50 0" Style="{StaticResource ButtonStyle}" Click="ButSearch_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
