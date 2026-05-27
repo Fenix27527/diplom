@@ -6,16 +6,14 @@
              xmlns:local="clr-namespace:PersonelRecords.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-       <UserControl.Resources>
+    <UserControl.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="30"/>
-            <!-- текст -->
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <!-- фон -->
             <Setter Property="Background">
                 <Setter.Value>
                     <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
@@ -24,7 +22,6 @@
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
-            <!-- обводка -->
             <Setter Property="BorderBrush" Value="#1e0022"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Template">
@@ -57,19 +54,24 @@
         </Grid.ColumnDefinitions>
         <Image Source="/Resources/bg/bgVacancy.jpg" Height="Auto" Width="Auto" Grid.ColumnSpan="3" Grid.RowSpan="6" Stretch="UniformToFill"/>
         <Button Name="ButBack" Content="Назад" Style="{StaticResource ButtonStyle}" Click="ButBack_Click"/>
+
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button x:Name="ButUpdVac" Content="Обновить" Style="{StaticResource ButtonStyle}" Click="ButUpdVac_Click"/>
             <Button x:Name="ButDelVac" Content="Удалить" Margin="10 0 0 0"  Style="{StaticResource ButtonStyle}" Click="ButDelVac_Click"/>
+            <Button x:Name="ButHistoryVac" Content="История" Margin="10 0 0 0"  Style="{StaticResource ButtonStyle}" Click="ButHistoryVac_Click"/>
         </StackPanel>
+
         <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="ButUpdRes" Content="Обновить"  Style="{StaticResource ButtonStyle}" Click="ButUpdRes_Click"/>
                 <Button x:Name="ButDelRes" Content="Удалить" Margin="10 0 0 0"  Style="{StaticResource ButtonStyle}" Click="ButDelRes_Click"/>
+                <Button x:Name="ButHistoryRes" Content="История" Margin="10 0 0 0"  Style="{StaticResource ButtonStyle}" Click="ButHistoryRes_Click"/>
             </StackPanel>
         </StackPanel>
-        <Label Name="labVac" Content="Вакансии" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16">
-        </Label>
+
+        <Label Name="labVac" Content="Вакансии" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="16"/>
         <Label Name="labRes" Content="Резюме" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"  FontSize="16"/>
+
         <Border Grid.Row="2" CornerRadius="10" ClipToBounds="True" Margin="10 10 10 10">
             <DataGrid AutoGenerateColumns="False" x:Name="TABLEVacancy" CanUserAddRows="True" Opacity="0.7" Background="LightGray" FontWeight="Bold">
                 <DataGrid.Columns>
@@ -79,17 +81,30 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-        <Border Grid.Column="1" Grid.Row="2"  CornerRadius="10" ClipToBounds="True" Margin="10 10 10 10">
-            <DataGrid AutoGenerateColumns="False" x:Name="TABLEResume"  CanUserAddRows="True" Opacity="0.7" Background="LightGray" FontWeight="Bold">
+
+        <!-- ✅ УБРАЛИ столбец Post, заменили на ComboBox с вакансиями -->
+        <Border Grid.Column="1" Grid.Row="2" CornerRadius="10" ClipToBounds="True" Margin="10 10 10 10">
+            <DataGrid AutoGenerateColumns="False" x:Name="TABLEResume" CanUserAddRows="True" 
+                      Opacity="0.7" Background="LightGray" FontWeight="Bold"
+                      PreparingCellForEdit="TABLEResume_PreparingCellForEdit">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" IsReadOnly="True" Header="Номер" Width="Auto"/>
                     <DataGridTextColumn Binding="{Binding FIO}" Header="ФИО" Width="Auto"/>
-                    <DataGridTextColumn Binding="{Binding Post}" Header="Должность" Width="Auto"/>
-                    <DataGridTextColumn Binding="{Binding VacancyId}" Header="№Вакансии" Width="Auto"/>
+
+                    <!-- ✅ ComboBox вместо текстового поля Post -->
+                    <DataGridComboBoxColumn x:Name="VacancyComboBoxColumn" 
+                                            Header="Вакансия" 
+                                            Width="Auto"
+                                            DisplayMemberPath="Post"
+                                            SelectedValuePath="Id"
+                                            SelectedValueBinding="{Binding VacancyId, UpdateSourceTrigger=PropertyChanged}"            
+                                            CanUserSort="False" />
+
                     <DataGridTextColumn Binding="{Binding Link}" Header="Ссылка" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
+
         <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBox x:Name="TbSearch" Width="300" Height="30"/>
             <Button x:Name="ButSearch" Content="Поиск" Margin="10 0 50 0"  Style="{StaticResource ButtonStyle}" Click="ButSearch_Click"/>

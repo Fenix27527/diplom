@@ -3,64 +3,307 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace PersonelRecords.Modules
 {
-    internal class ModuleHistory
+    public static class ModuleHistory
     {
-        public static void SaveWorkerHistory(int originalId, string changeType, DataRow oldRow, DataRow newRow)
+        /// Сохраняет изменения таблицы в БД + записывает историю
+        public static void SaveTableChanges(
+            DataTable table,
+            string tableName,
+            string historyTableName,
+            string[] fieldsToTrack,
+            string currentUser = null)  // ← НОВЫЙ ПАРАМЕТР
         {
-            DataRow rowForOld = (changeType == "INSERT") ? null : oldRow;
-            DataRow rowForNew = (changeType == "DELETE") ? null : newRow;
-            string sql = @"
-                INSERT INTO HISTORYWorkers 
-                (OriginalId, ChangeType, ChangeDate,
-                 Old_FIO, Old_DateOfBirth, Old_Division, Old_Post, Old_INN, Old_Address, Old_DateOfReception, Old_Family, Old_Education, Old_Awards,
-                 New_FIO, New_DateOfBirth, New_Division, New_Post, New_INN, New_Address, New_DateOfReception, New_Family, New_Education, New_Awards)
-                VALUES
-                (@id, @type, GETDATE(),
-                 @oldFIO, @oldDOB, @oldDiv, @oldPost, @oldINN, @oldAddr, @oldDOR, @oldFam, @oldEdu, @oldAwd,
-                 @newFIO, @newDOB, @newDiv, @newPost, @newINN, @newAddr, @newDOR, @newFam, @newEdu, @newAwd)";
+            if (table == null)
+                throw new ArgumentNullException(nameof(table), "Таблица не загружена");
 
-            using (SqlConnection conn = new SqlConnection(ModuleDB.GetConnectionString()))
-            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            try
             {
-                // Общие параметры
-                cmd.Parameters.AddWithValue("@id", originalId);
-                cmd.Parameters.AddWithValue("@type", changeType);
+                SaveHistory(table, tableName, historyTableName, fieldsToTrack, currentUser);
+                ApplyChangesToDatabase(table, tableName, fieldsToTrack);
+                table.AcceptChanges();
 
-                // Параметры для старых значений
-                AddRowParameters(cmd, rowForOld, "old");
-                // Параметры для новых значений
-                AddRowParameters(cmd, rowForNew, "new");
+                MessageBox.Show("Изменения сохранены!", "Успех",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
+        }
+
+        /// Удаляет выбранные строки из таблицы с сохранением истории
+        public static void DeleteSelectedRows(
+            DataGrid grid,
+            DataTable table,
+            string tableName,
+            string historyTableName,
+            string[] fieldsToTrack,
+            string currentUser = null)  // ← НОВЫЙ ПАРАМЕТР
+        {
+            if (grid.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Выберите строки для удаления", "Внимание",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Удалить выбранные записи ({grid.SelectedItems.Count})?",
+                "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes) return;
+
+            try
+            {
+                var idsToDelete = new List<int>();
+
+                foreach (DataRowView rowView in grid.SelectedItems)
+                {
+                    DataRow row = rowView.Row;
+                    int id = Convert.ToInt32(row["Id"]);
+                    idsToDelete.Add(id);
+
+                    WriteHistoryEntry(tableName, historyTableName, "DELETE", row, null, fieldsToTrack, currentUser);
+                }
+
+                using (var conn = new SqlConnection(ModuleDB.GetConnectionString()))
+                {
+                    conn.Open();
+                    foreach (int id in idsToDelete)
+                    {
+                        using (var cmd = new SqlCommand($"DELETE FROM {tableName} WHERE Id = @Id", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Id", id);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                var rowsToDelete = new List<DataRow>();
+                foreach (DataRowView rowView in grid.SelectedItems)
+                {
+                    rowsToDelete.Add(rowView.Row);
+                }
+
+                foreach (var row in rowsToDelete)
+                {
+                    row.Delete();
+                }
+
+                table.AcceptChanges();
+                MessageBox.Show("Записи удалены", "Успех",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка удаления: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // ==================== ВНУТРЕННИЕ МЕТОДЫ ====================
+
+        private static void SaveHistory(DataTable table, string tableName, string historyTableName, string[] fields, string currentUser)
+        {
+            foreach (DataRow row in table.Rows)
+            {
+                if (row.RowState == DataRowState.Unchanged) continue;
+
+                DataRow oldRow = null;
+
+                if (row.RowState == DataRowState.Modified)
+                {
+                    oldRow = table.NewRow();
+                    foreach (DataColumn col in table.Columns)
+                    {
+                        oldRow[col] = row[col, DataRowVersion.Original];
+                    }
+                }
+                else if (row.RowState == DataRowState.Added)
+                {
+                    // oldRow = null
+                }
+                else if (row.RowState == DataRowState.Deleted)
+                {
+                    continue;
+                }
+
+                WriteHistoryEntry(tableName, historyTableName,
+                    row.RowState == DataRowState.Added ? "INSERT" : "UPDATE",
+                    oldRow, row, fields, currentUser);
+            }
+        }
+
+        private static void WriteHistoryEntry(
+            string tableName,
+            string historyTableName,
+            string changeType,
+            DataRow oldRow,
+            DataRow newRow,
+            string[] fields,
+            string currentUser)
+        {
+            int originalId = 0;
+
+            if (newRow != null && newRow["Id"] != DBNull.Value)
+            {
+                originalId = Convert.ToInt32(newRow["Id"]);
+            }
+            else if (oldRow != null && oldRow["Id"] != DBNull.Value)
+            {
+                originalId = Convert.ToInt32(oldRow["Id"]);
+            }
+
+            // Проверяем, есть ли в таблице истории поле ChangedByUser
+            bool hasChangedByUser = CheckIfColumnExists(historyTableName, "ChangedByUser");
+
+            string columns = "OriginalId, ChangeType, ChangeDate";
+            if (hasChangedByUser)
+                columns += ", ChangedByUser";
+
+            string values = "@id, @type, GETDATE()";
+            if (hasChangedByUser)
+                values += ", @changedBy";
+
+            var parameters = new List<(string name, object value)>
+            {
+                ("@id", originalId),
+                ("@type", changeType)
+            };
+
+            if (hasChangedByUser)
+            {
+                parameters.Add(("@changedBy", currentUser ?? (object)DBNull.Value));
+            }
+
+            foreach (var field in fields)
+            {
+                string oldField = $"Old_{field}";
+                string newField = $"New_{field}";
+
+                columns += $", {oldField}, {newField}";
+                values += $", @old{field}, @new{field}";
+
+                parameters.Add(($"@old{field}", oldRow?[field] ?? DBNull.Value));
+                parameters.Add(($"@new{field}", newRow?[field] ?? DBNull.Value));
+            }
+
+            string sql = $@"
+                INSERT INTO {historyTableName} ({columns})
+                VALUES ({values})";
+
+            using (var conn = new SqlConnection(ModuleDB.GetConnectionString()))
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                foreach (var param in parameters)
+                {
+                    cmd.Parameters.AddWithValue(param.name, param.value ?? DBNull.Value);
+                }
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
         }
 
-        private static void AddRowParameters(SqlCommand cmd, DataRow row, string prefix)
+        /// Проверяет, существует ли колонка в таблице
+        private static bool CheckIfColumnExists(string tableName, string columnName)
         {
-            // Функция: получить значение из колонки или DBNull.Value
-            object GetValue(string colName)
+            string sql = $@"
+                SELECT COUNT(*) 
+                FROM INFORMATION_SCHEMA.COLUMNS 
+                WHERE TABLE_NAME = @tableName AND COLUMN_NAME = @columnName";
+
+            using (var conn = new SqlConnection(ModuleDB.GetConnectionString()))
+            using (var cmd = new SqlCommand(sql, conn))
             {
-                if (row == null) return DBNull.Value;
-                object val = row[colName];
-                return (val == null || val == DBNull.Value) ? DBNull.Value : val;
+                cmd.Parameters.AddWithValue("@tableName", tableName);
+                cmd.Parameters.AddWithValue("@columnName", columnName);
+
+                conn.Open();
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count > 0;
+            }
+        }
+
+        private static void ApplyChangesToDatabase(DataTable table, string tableName, string[] fields)
+        {
+            using (var conn = new SqlConnection(ModuleDB.GetConnectionString()))
+            {
+                conn.Open();
+
+                foreach (DataRow row in table.Rows)
+                {
+                    if (row.RowState == DataRowState.Unchanged) continue;
+                    if (row.RowState == DataRowState.Deleted) continue;
+
+                    if (row.RowState == DataRowState.Added)
+                    {
+                        InsertRow(conn, tableName, row, fields);
+                    }
+                    else if (row.RowState == DataRowState.Modified)
+                    {
+                        UpdateRow(conn, tableName, row, fields);
+                    }
+                }
+            }
+        }
+
+        private static void InsertRow(SqlConnection conn, string tableName, DataRow row, string[] fields)
+        {
+            string columns = string.Join(", ", fields);
+            string parameters = string.Join(", ", fields.Select(f => "@" + f));
+
+            string sql = $@"
+                INSERT INTO {tableName} ({columns})
+                VALUES ({parameters});
+                SELECT CAST(SCOPE_IDENTITY() AS int);";
+
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                AddParameters(cmd, row, fields, includeId: false);
+                int newId = Convert.ToInt32(cmd.ExecuteScalar());
+                row["Id"] = newId;
+            }
+        }
+
+        private static void UpdateRow(SqlConnection conn, string tableName, DataRow row, string[] fields)
+        {
+            string setClause = string.Join(", ", fields.Select(f => $"{f} = @{f}"));
+
+            string sql = $@"
+                UPDATE {tableName}
+                SET {setClause}
+                WHERE Id = @Id";
+
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                AddParameters(cmd, row, fields, includeId: true);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private static void AddParameters(SqlCommand cmd, DataRow row, string[] fields, bool includeId)
+        {
+            foreach (var field in fields)
+            {
+                object value = row[field];
+                if (value == null || value == DBNull.Value)
+                    cmd.Parameters.AddWithValue("@" + field, DBNull.Value);
+                else
+                    cmd.Parameters.AddWithValue("@" + field, value);
             }
 
-            cmd.Parameters.AddWithValue($"@{prefix}FIO", GetValue("FIO"));
-            cmd.Parameters.AddWithValue($"@{prefix}DOB", GetValue("DateOfBirth"));
-            cmd.Parameters.AddWithValue($"@{prefix}Div", GetValue("Division"));
-            cmd.Parameters.AddWithValue($"@{prefix}Post", GetValue("Post"));
-            cmd.Parameters.AddWithValue($"@{prefix}INN", GetValue("INN"));
-            cmd.Parameters.AddWithValue($"@{prefix}Addr", GetValue("Address"));
-            cmd.Parameters.AddWithValue($"@{prefix}DOR", GetValue("DateOfReception"));
-            cmd.Parameters.AddWithValue($"@{prefix}Fam", GetValue("Family"));
-            cmd.Parameters.AddWithValue($"@{prefix}Edu", GetValue("Education"));
-            cmd.Parameters.AddWithValue($"@{prefix}Awd", GetValue("Awards"));
+            if (includeId)
+            {
+                cmd.Parameters.AddWithValue("@Id", row["Id"]);
+            }
         }
     }
 }

@@ -64,7 +64,6 @@
     <Compile Include="Modules\ModuleLogin.cs" />
     <Compile Include="Modules\ModuleRegister.cs" />
     <Compile Include="Modules\ModuleSearch.cs" />
-    <Compile Include="Modules\TableHelper.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>

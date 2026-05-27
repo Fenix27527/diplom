@@ -1,20 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 namespace PersonelRecords.Modules
 {
-    internal class ModuleLogin
+    internal static class ModuleLogin
     {
-        public static bool Login(string login, string password)
+        /// Пытается авторизовать пользователя.
+        /// Возвращает: 
+        ///   - true, если вход успешен, и в out-параметр fio записывает ФИО
+        ///   - false, если логин/пароль неверны
+        public static bool TryLogin(string login, string password, out string fio)
         {
-            string sql = $"SELECT COUNT(*) FROM Logins WHERE Login = '{login}' AND Password = '{password}'";
-            DataTable dt = ModuleDB.ExecuteSelect(sql);
-            int count = Convert.ToInt32(dt.Rows[0][0]);
-            return count > 0;
+            fio = null; // По умолчанию — не авторизован
+
+            // Используем параметризованный запрос для защиты от SQL-инъекций
+            string sql = "SELECT FIO FROM Logins WHERE Login = @login AND Password = @password";
+
+            using (var conn = new System.Data.SqlClient.SqlConnection(ModuleDB.GetConnectionString()))
+            using (var cmd = new System.Data.SqlClient.SqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@login", login);
+                cmd.Parameters.AddWithValue("@password", password);
+
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+
+                if (result != null && result != System.DBNull.Value)
+                {
+                    fio = result.ToString(); // Получили ФИО
+                    return true; // Успешный вход
+                }
+            }
+
+            return false; // Неверный логин или пароль
         }
     }
 }

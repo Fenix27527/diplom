@@ -19,6 +19,7 @@ namespace PersonelRecords
 {
     public partial class MainWindow : Window
     {
+        public string CurrentUserFIO { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -40,17 +41,23 @@ namespace PersonelRecords
 
         public void ShowWorkers()
         {
-            Content = new WorkersView(this);
+            var workersView = new WorkersView(this);
+            workersView.LoadData();
+            Content = workersView;
         }
 
         public void ShowState()
         {
-            Content = new StateView(this);
+            var stateView = new StateView(this);
+            stateView.LoadData();  // ← Важно!
+            Content = stateView;
         }
 
         public void ShowVacancy()
         {
-            Content = new VacancyView(this);
+            var vacancyView = new VacancyView(this);
+            vacancyView.LoadData();  // ← Важно!
+            Content = vacancyView;
         }
     }
 }

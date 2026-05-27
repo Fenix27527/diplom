@@ -2,19 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PersonelRecords.Views
 {
@@ -22,119 +11,211 @@ namespace PersonelRecords.Views
     {
         private MainWindow _mainWindow;
         private DataTable _vacancyTable;
-        private SqlDataAdapter _vacancyAdapter;
         private DataTable _resumesTable;
-        private SqlDataAdapter _resumesAdapter;
+        private DataTable _vacancyList; // Список вакансий для ComboBox
+
+        // ✅ УБРАЛИ "Post" из полей резюме
+        private readonly string[] _vacancyFields = new[] { "Post", "Conditions" };
+        private readonly string[] _resumesFields = new[] { "FIO", "VacancyId", "Link" };
 
         public VacancyView(MainWindow mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            Loaded += VacancyView_Loaded;
         }
-        private void VacancyView_Loaded(object sender, RoutedEventArgs e)
+
+        public void LoadData()
         {
             try
             {
+                // 1. Загружаем таблицу Вакансии
                 var (vTable, vAdapter) = ModuleDB.FillWithAdapter("SELECT * FROM Vacancy");
                 _vacancyTable = vTable;
-                _vacancyAdapter = vAdapter;
-                var vBuilder = new SqlCommandBuilder(_vacancyAdapter);
-                _vacancyAdapter.InsertCommand = vBuilder.GetInsertCommand();
-                _vacancyAdapter.UpdateCommand = vBuilder.GetUpdateCommand();
-                _vacancyAdapter.DeleteCommand = vBuilder.GetDeleteCommand();
                 TABLEVacancy.ItemsSource = _vacancyTable.DefaultView;
 
+                // 2. Загружаем таблицу Резюме
                 var (rTable, rAdapter) = ModuleDB.FillWithAdapter("SELECT * FROM Resumes");
                 _resumesTable = rTable;
-                _resumesAdapter = rAdapter;
-                var rBuilder = new SqlCommandBuilder(_resumesAdapter);
-                _resumesAdapter.InsertCommand = rBuilder.GetInsertCommand();
-                _resumesAdapter.UpdateCommand = rBuilder.GetUpdateCommand();
-                _resumesAdapter.DeleteCommand = rBuilder.GetDeleteCommand();
                 TABLEResume.ItemsSource = _resumesTable.DefaultView;
+
+                // 3. ✅ Загружаем список вакансий для ComboBox
+                UpdateVacancyComboBoxList();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки данных: " + ex.Message, "Ошибка");
+                MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void UpdateVacancyDB()
+        private void TABLEResume_PreparingCellForEdit(object sender, DataGridPreparingCellForEditEventArgs e)
         {
-            try 
+            if (e.Column is DataGridComboBoxColumn comboBoxColumn && e.EditingElement is ComboBox comboBox)
             {
-                _vacancyAdapter.Update(_vacancyTable); 
-            }
-            catch (System.Exception ex) 
-            {
-                MessageBox.Show("Ошибка сохранения вакансий: " + ex.Message, "Ошибка"); 
+                comboBox.LostFocus += (s, args) =>
+                {
+                    if (comboBox.SelectedItem == null && !string.IsNullOrWhiteSpace(comboBox.Text))
+                    {
+                        MessageBox.Show("Выберите вакансию из списка!", "Ошибка ввода",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                };
             }
         }
 
-        private void UpdateResumesDB()
-        {
-            try 
-            { 
-                _resumesAdapter.Update(_resumesTable); 
-            }
-            catch (System.Exception ex) 
-            { 
-                MessageBox.Show("Ошибка сохранения резюме: " + ex.Message, "Ошибка"); 
-            }
-        }
+        // ===== ВАКАНСИИ =====
         private void ButUpdVac_Click(object sender, RoutedEventArgs e)
         {
-            UpdateVacancyDB();
-            MessageBox.Show("Данные обновлены", "Успех!");
+            ModuleHistory.SaveTableChanges(
+                table: _vacancyTable,
+                tableName: "Vacancy",
+                historyTableName: "HISTORYVacancy",
+                fieldsToTrack: _vacancyFields,
+                currentUser: _mainWindow.CurrentUserFIO
+            );
+            UpdateVacancyComboBoxList();
         }
+
         private void ButDelVac_Click(object sender, RoutedEventArgs e)
         {
-            if (TABLEVacancy.SelectedItems == null || TABLEVacancy.SelectedItems.Count == 0)
-                return;
+            ModuleHistory.DeleteSelectedRows(
+                grid: TABLEVacancy,
+                table: _vacancyTable,
+                tableName: "Vacancy",
+                historyTableName: "HISTORYVacancy",
+                fieldsToTrack: _vacancyFields,
+                currentUser: _mainWindow.CurrentUserFIO
+            );
+            UpdateVacancyComboBoxList();
 
-            var rowsDel = new List<DataRow>();
-            foreach (DataRowView rowView in TABLEVacancy.SelectedItems)
+            // После удаления вакансии обновляем список для ComboBox
+            _vacancyList = ModuleDB.ExecuteSelect("SELECT Id, Post FROM Vacancy ORDER BY Post");
+            if (VacancyComboBoxColumn != null)
             {
-                rowsDel.Add(rowView.Row);
+                VacancyComboBoxColumn.ItemsSource = _vacancyList.DefaultView;
             }
-
-            foreach (var row in rowsDel)
+        }
+        /// Обновляет список вакансий для ComboBox
+        private void UpdateVacancyComboBoxList()
+        {
+            try
             {
-                row.Delete();
+                // 1. Загружаем актуальный список вакансий
+                _vacancyList = ModuleDB.ExecuteSelect("SELECT Id, Post FROM Vacancy ORDER BY Post");
+
+                // 2. Применяем к колонке
+                if (VacancyComboBoxColumn != null)
+                {
+                    VacancyComboBoxColumn.ItemsSource = _vacancyList.DefaultView;
+                }
+
+                // 3. ✅ Принудительно обновляем отображение DataGrid
+                var currentItemsSource = TABLEResume.ItemsSource;
+                TABLEResume.ItemsSource = null;
+                TABLEResume.ItemsSource = currentItemsSource;
+
+                // 4. ✅ Обновляем данные в таблице (чтобы перечитать VacancyId из БД)
+                var (updatedResumes, _) = ModuleDB.FillWithAdapter("SELECT * FROM Resumes");
+                _resumesTable = updatedResumes;
+                TABLEResume.ItemsSource = _resumesTable.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка обновления списка вакансий: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        private void ButHistoryVac_Click(object sender, RoutedEventArgs e)
+        {
+            var hw = new HistoryWindow("HISTORYVacancy");
+            hw.Owner = Window.GetWindow(this);
+            hw.ShowDialog();
+        }
+
+        // ===== РЕЗЮМЕ =====
         private void ButUpdRes_Click(object sender, RoutedEventArgs e)
         {
-            UpdateResumesDB();
-            MessageBox.Show("Данные обновлены", "Успех!");
+            if (!ValidateResumesVacancyId())
+            {
+                MessageBox.Show("Исправьте ошибки в резюме перед сохранением", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ModuleHistory.SaveTableChanges(
+                table: _resumesTable,
+                tableName: "Resumes",
+                historyTableName: "HISTORYResumes",
+                fieldsToTrack: _resumesFields,
+                currentUser: _mainWindow.CurrentUserFIO
+            );
+        }
+
+        private bool ValidateResumesVacancyId()
+        {
+            foreach (DataRow row in _resumesTable.Rows)
+            {
+                if (row.RowState == DataRowState.Unchanged) continue;
+
+                var vacancyId = row["VacancyId"];
+                if (vacancyId == null || vacancyId == DBNull.Value)
+                {
+                    MessageBox.Show(
+                        $"В строке {row["Id"]} не выбрана вакансия!\nВыберите вакансию из выпадающего списка.",
+                        "Ошибка ввода",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void ButDelRes_Click(object sender, RoutedEventArgs e)
         {
-            if (TABLEResume.SelectedItems == null || TABLEResume.SelectedItems.Count == 0)
-                return;
-
-            var rowsDel = new List<DataRow>();
-            foreach (DataRowView rowView in TABLEResume.SelectedItems)
-            {
-                rowsDel.Add(rowView.Row);
-            }
-
-            foreach (var row in rowsDel)
-            {
-                row.Delete();
-            }
+            ModuleHistory.DeleteSelectedRows(
+                grid: TABLEResume,
+                table: _resumesTable,
+                tableName: "Resumes",
+                historyTableName: "HISTORYResumes",
+                fieldsToTrack: _resumesFields,
+                currentUser: _mainWindow.CurrentUserFIO
+            );
         }
+
+        private void ButHistoryRes_Click(object sender, RoutedEventArgs e)
+        {
+            var hw = new HistoryWindow("HISTORYResumes");
+            hw.Owner = Window.GetWindow(this);
+            hw.ShowDialog();
+        }
+
+        // ✅ УБРАЛИ "Post" из поиска по резюме
         private void ButSearch_Click(object sender, RoutedEventArgs e)
         {
-            ModuleSearch.Filter(_vacancyTable, TbSearch.Text, "Post", "Conditions");
-            ModuleSearch.Filter(_resumesTable, TbSearch.Text, "FIO", "Post", "Link");
+            try
+            {
+                // Поиск по вакансиям
+                ModuleSearch.Filter(_vacancyTable, TbSearch.Text, "Post", "Conditions");
+                TABLEVacancy.ItemsSource = null;
+                TABLEVacancy.ItemsSource = _vacancyTable.DefaultView;
+
+                // Поиск по резюме
+                ModuleSearch.Filter(_resumesTable, TbSearch.Text, "FIO", "Link");
+                TABLEResume.ItemsSource = null;
+                TABLEResume.ItemsSource = _resumesTable.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка поиска: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
         private void ButBack_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindow.ShowMenu();
+            _mainWindow?.ShowMenu();
         }
     }
 }

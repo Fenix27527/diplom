@@ -1,22 +1,37 @@
-﻿<Window x:Class="PersonelRecords.Modules.HistoryWindow"
+﻿<Window x:Class="PersonelRecords.Views.HistoryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PersonelRecords.Modules"
+        xmlns:local="clr-namespace:PersonelRecords.Views"
         mc:Ignorable="d"
         Title="HistoryWindow" Height="450" Width="800">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <Image Source="/Resources/bg/bgRegistration.jpg" Grid.ColumnSpan="3" Grid.RowSpan="6" Stretch="UniformToFill"/>
-        <ListBox x:Name="ListHistory" Grid.Column="0" Margin="0,0,10,0"
-                     SelectionChanged="ListHistory_SelectionChanged"/>
 
+        <Image Source="/Resources/bg/bgRegistration.jpg" Grid.ColumnSpan="2" Stretch="UniformToFill"/>
+
+        <!-- ✅ ЗАМЕНИЛИ ListBox на DataGrid -->
+        <DataGrid x:Name="DataGridHistory" 
+                  Grid.Column="0" 
+                  Margin="0,0,10,0"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  SelectionChanged="DataGridHistory_SelectionChanged"
+                  Opacity="0.7" Background="LightGray">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto"/>
+                <DataGridTextColumn Header="№Записи" Binding="{Binding [№Записи]}" Width="Auto"/>
+                <DataGridTextColumn Header="Тип" Binding="{Binding Тип}" Width="Auto"/>
+                <DataGridTextColumn Header="Дата/Время" Binding="{Binding [Дата/Время]}" Width="Auto"/>
+                <DataGridTextColumn Header="Изменил" Binding="{Binding Изменил}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>

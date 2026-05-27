@@ -51,34 +51,18 @@ CREATE TABLE Vacancy (
 CREATE TABLE Resumes (
     Id INT PRIMARY KEY IDENTITY(1,1),
     FIO NVARCHAR(100),
-    Post NVARCHAR(100),      
     VacancyId INT NOT NULL,            
-    Link NVARCHAR(MAX) ,       
+    Link NVARCHAR(MAX),       
     CONSTRAINT FK_Resumes_Vacancy 
         FOREIGN KEY (VacancyId) 
         REFERENCES Vacancy(Id) 
         ON DELETE CASCADE              
 );
 
-
-
-
-CREATE TABLE HISTORYState (
-    Id INT PRIMARY KEY IDENTITY(1,1),
-    OriginalId INT NOT NULL,            
-    ChangeType NVARCHAR(10) NOT NULL,   
-    ChangeDate DATETIME DEFAULT GETDATE(),
-
-    Division NVARCHAR(100),
-    Post NVARCHAR(100),
-    NumberOfWorkers INT,
-    NumberOfHours FLOAT,
-    Salary INT 
-);
-
 CREATE TABLE HISTORYWorkers (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    OriginalId INT NOT NULL,            
+    OriginalId INT NOT NULL,   
+    ChangedByUser NVARCHAR(100),
     ChangeType NVARCHAR(10) NOT NULL,   
     ChangeDate DATETIME DEFAULT GETDATE(),
 
@@ -105,24 +89,52 @@ CREATE TABLE HISTORYWorkers (
     New_Awards NVARCHAR(MAX)
 );
 
+CREATE TABLE HISTORYState (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    OriginalId INT NOT NULL,
+    ChangedByUser NVARCHAR(100),
+    ChangeType NVARCHAR(10) NOT NULL,
+    ChangeDate DATETIME DEFAULT GETDATE(),
+    
+    Old_Division NVARCHAR(100),
+    Old_Post NVARCHAR(100),
+    Old_NumberOfWorkers INT,
+    Old_NumberOfHours FLOAT,
+    Old_Salary INT,
+    
+    New_Division NVARCHAR(100),
+    New_Post NVARCHAR(100),
+    New_NumberOfWorkers INT,
+    New_NumberOfHours FLOAT,
+    New_Salary INT
+);
+
 CREATE TABLE HISTORYVacancy (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    OriginalId INT NOT NULL,            
-    ChangeType NVARCHAR(10) NOT NULL,   
+    OriginalId INT NOT NULL,
+    ChangedByUser NVARCHAR(100),
+    ChangeType NVARCHAR(10) NOT NULL,
     ChangeDate DATETIME DEFAULT GETDATE(),
-
-    Post NVARCHAR(100),       
-    Conditions NVARCHAR(MAX)  
+    
+    Old_Post NVARCHAR(100),
+    Old_Conditions NVARCHAR(MAX),
+    
+    New_Post NVARCHAR(100),
+    New_Conditions NVARCHAR(MAX)
 );
 
 CREATE TABLE HISTORYResumes (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    OriginalId INT NOT NULL,            
-    ChangeType NVARCHAR(10) NOT NULL,   
+    OriginalId INT NOT NULL,
+    ChangedByUser NVARCHAR(100),
+    ChangeType NVARCHAR(10) NOT NULL,
     ChangeDate DATETIME DEFAULT GETDATE(),
-
-    FIO NVARCHAR(100),
-    Post NVARCHAR(100),      
-    VacancyId INT NOT NULL,            
-    Link NVARCHAR(MAX)              
+    
+    Old_FIO NVARCHAR(100),
+    Old_VacancyId INT,
+    Old_Link NVARCHAR(MAX),
+    
+    New_FIO NVARCHAR(100),
+    New_VacancyId INT,
+    New_Link NVARCHAR(MAX)
 );

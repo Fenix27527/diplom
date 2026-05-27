@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,78 +23,230 @@ namespace PersonelRecords.Views
     {
         private MainWindow _mainWindow;
         private DataTable _workersTable;
-        private SqlDataAdapter _adapter;
-        private string _primaryKeyColumn = "Id";
+        private DataTable _divisionPostList;
+
+        // Поля для отслеживания изменений (кроме Id)
+        private readonly string[] _trackedFields = new[]
+        {
+            "FIO", "DateOfBirth", "Division", "Post", "INN",
+            "Address", "DateOfReception", "Family", "Education", "Awards"
+        };
+
 
         public WorkersView(MainWindow mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            Loaded += WorkersView_Loaded;
         }
-
-        private void WorkersView_Loaded(object sender, RoutedEventArgs e)
+        
+        public void LoadData()
         {
             try
             {
+                // 1. Загружаем основную таблицу
                 var (table, adapter) = ModuleDB.FillWithAdapter("SELECT * FROM Workers");
                 _workersTable = table;
-                _adapter = adapter;
 
-                // Определяем имя колонки первичного ключа (без учёта регистра)
-                var pkCol = _workersTable.Columns.Cast<DataColumn>()
-                    .FirstOrDefault(c => c.ColumnName.Equals("Id", StringComparison.OrdinalIgnoreCase));
-                if (pkCol != null)
-                    _primaryKeyColumn = pkCol.ColumnName;
-                else
-                    _primaryKeyColumn = _workersTable.Columns[0].ColumnName; // запасной вариант
+                // 2. Загружаем список подразделений и должностей для выпадающих списков
+                _divisionPostList = ModuleDB.GetDivisionPostList();
 
-                // Убедитесь, что в командах SqlCommandBuilder используется правильное имя
-                SqlCommandBuilder builder = new SqlCommandBuilder(_adapter);
-                _adapter.InsertCommand = builder.GetInsertCommand();
-                _adapter.UpdateCommand = builder.GetUpdateCommand();
-                _adapter.DeleteCommand = builder.GetDeleteCommand();
-
+                // 3. Привязываем данные к DataGrid
                 TABLEWorkers.ItemsSource = _workersTable.DefaultView;
+
+                // 4. Настраиваем выпадающие списки в колонках
+                SetupComboBoxColumns();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки: " + ex.Message);
+                MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
+        /// Настраивает ComboBox для колонок Division и Post
+        /// Настраивает ComboBox для колонок Division и Post
+        private void SetupComboBoxColumns()
+        {
+            // Находим колонки по заголовкам
+            var divisionColumn = TABLEWorkers.Columns
+                .Cast<DataGridColumn>()
+                .FirstOrDefault(c => c.Header?.ToString() == "Подразделение") as DataGridTextColumn;
+
+            var postColumn = TABLEWorkers.Columns
+                .Cast<DataGridColumn>()
+                .FirstOrDefault(c => c.Header?.ToString() == "Должность") as DataGridTextColumn;
+
+            if (divisionColumn != null)
+            {
+                var comboBoxColumn = new DataGridComboBoxColumn
+                {
+                    Header = "Подразделение",
+                    Width = divisionColumn.Width,
+                    ItemsSource = _divisionPostList.DefaultView,
+                    DisplayMemberPath = "Division",      // Что показывать в списке
+                    SelectedValuePath = "Division",       // Что записывать в ячейку
+                    SelectedValueBinding = new System.Windows.Data.Binding("Division")
+                    {
+                        UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged
+                    }
+                };
+
+                // Заменяем колонку
+                int index = TABLEWorkers.Columns.IndexOf(divisionColumn);
+                TABLEWorkers.Columns.RemoveAt(index);
+                TABLEWorkers.Columns.Insert(index, comboBoxColumn);
+            }
+
+            if (postColumn != null)
+            {
+                var comboBoxColumn = new DataGridComboBoxColumn
+                {
+                    Header = "Должность",
+                    Width = postColumn.Width,
+                    ItemsSource = _divisionPostList.DefaultView,
+                    DisplayMemberPath = "Post",
+                    SelectedValuePath = "Post",
+                    SelectedValueBinding = new System.Windows.Data.Binding("Post")
+                    {
+                        UpdateSourceTrigger = System.Windows.Data.UpdateSourceTrigger.PropertyChanged
+                    }
+                };
+
+                int index = TABLEWorkers.Columns.IndexOf(postColumn);
+                TABLEWorkers.Columns.RemoveAt(index);
+                TABLEWorkers.Columns.Insert(index, comboBoxColumn);
+            }
+        }
+
+        /// Валидация ИНН при вводе (только цифры, 10-12 символов)
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Разрешаем только цифры
+            e.Handled = !IsTextAllowed(e.Text);
+        }
+
+        private bool IsTextAllowed(string text)
+        {
+            return Regex.IsMatch(text, @"^[0-9]+$");
+        }
+
+        /// Проверка длины ИНН при потере фокуса
+        private void InnColumn_LosingFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox && textBox.Text != null)
+            {
+                string inn = textBox.Text.Trim();
+
+                if (inn.Length < 10 || inn.Length > 12)
+                {
+                    MessageBox.Show("ИНН должен содержать от 10 до 12 цифр!", "Ошибка ввода",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    textBox.Focus(); // Возвращаем фокус
+                }
+            }
+        }
+
+        /// Применяем валидацию к колонке ИНН при загрузке
+        private void ApplyInnValidation()
+        {
+            var innColumn = TABLEWorkers.Columns
+                .Cast<DataGridColumn>()
+                .FirstOrDefault(c => c.Header?.ToString() == "ИНН");
+
+            if (innColumn != null)
+            {
+                // Добавляем обработчик для всех ячеек этой колонки
+                TABLEWorkers.PreparingCellForEdit += (s, e) =>
+                {
+                    if (e.Column == innColumn && e.EditingElement is TextBox textBox)
+                    {
+                        textBox.PreviewTextInput += TextBox_PreviewTextInput;
+                        textBox.LostFocus += InnColumn_LosingFocus;
+                    }
+                };
+            }
+        }
 
 
         private void ButUpdate_Click(object sender, RoutedEventArgs e)
         {
-            TableHelper.SaveChanges(_workersTable, _adapter, "Id",
-        (id, oldRow, newRow) => ModuleHistory.SaveWorkerHistory(id, "UPDATE", oldRow, newRow));
-            MessageBox.Show("Сохранено");
+            if (!ValidateAllInn())
+                return;
+            ModuleHistory.SaveTableChanges(
+                table: _workersTable,
+                tableName: "Workers",
+                historyTableName: "HISTORYWorkers",
+                fieldsToTrack: _trackedFields,
+                currentUser: _mainWindow.CurrentUserFIO
+            );
         }
-        
+        /// Проверяет все строки на корректность ИНН перед сохранением
+        private bool ValidateAllInn()
+        {
+            foreach (DataRow row in _workersTable.Rows)
+            {
+                if (row.RowState == DataRowState.Unchanged) continue;
+
+                var innValue = row["INN"];
+                if (innValue != null && innValue != DBNull.Value)
+                {
+                    string inn = innValue.ToString().Trim();
+                    if (!Regex.IsMatch(inn, @"^[0-9]{10,12}$"))
+                    {
+                        MessageBox.Show(
+                            $"Неверный формат ИНН в строке {row["Id"]}: должно быть 10-12 цифр",
+                            "Ошибка валидации",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
 
         private void ButDelete_Click(object sender, RoutedEventArgs e)
         {
-            TableHelper.DeleteSelectedRows(TABLEWorkers, _workersTable, _adapter, "Id",
-         (id, row) => ModuleHistory.SaveWorkerHistory(id, "DELETE", row, null));
+            ModuleHistory.DeleteSelectedRows(
+                 grid: TABLEWorkers,
+                 table: _workersTable,
+                 tableName: "Workers",
+                 historyTableName: "HISTORYWorkers",
+                 fieldsToTrack: _trackedFields,
+                 currentUser: _mainWindow.CurrentUserFIO
+             );
         }
 
         private void ButHistory_Click(object sender, RoutedEventArgs e)
         {
-            HistoryWindow hw = new HistoryWindow();
+            var hw = new HistoryWindow("HISTORYWorkers");
             hw.Owner = Window.GetWindow(this);
             hw.ShowDialog();
         }
 
         private void ButSearch_Click(object sender, RoutedEventArgs e)
         {
-            ModuleSearch.Filter(_workersTable, TbSearch.Text,
-                "FIO", "Division", "Post", "INN", "Address", "Family", "Education", "Awards");
+            try
+            {
+                // Фильтруем таблицу
+                ModuleSearch.Filter(_workersTable, TbSearch.Text,
+                    "FIO", "Division", "Post", "INN", "Address", "Family", "Education", "Awards");
+
+                // ✅ ОБНОВЛЯЕМ таблицу на экране (критически важно!)
+                TABLEWorkers.ItemsSource = null;
+                TABLEWorkers.ItemsSource = _workersTable.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка поиска: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ButBack_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindow.ShowMenu();
+            _mainWindow?.ShowMenu();
         }
     }
 }

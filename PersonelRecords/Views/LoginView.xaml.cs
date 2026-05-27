@@ -27,16 +27,22 @@ namespace PersonelRecords.Views
         }
         private void ButInput_Click(object sender, RoutedEventArgs e)
         {
-            string login = TBAuthor.Text;   
-            string password = PBPassword.Password; 
+            string login = TBAuthor.Text;
+            string password = PBPassword.Password;
 
-            if (ModuleLogin.Login(login, password))
+            // Пытаемся войти, получая ФИО в out-параметр
+            if (ModuleLogin.TryLogin(login, password, out string userFio))
             {
+                // ✅ Сохраняем ФИО текущего пользователя в MainWindow
+                _mainWindow.CurrentUserFIO = userFio;
+
+                // Переходим в меню
                 _mainWindow.ShowMenu();
             }
             else
             {
-                MessageBox.Show("Неверный логин или пароль", "Ошибка входа");
+                MessageBox.Show("Неверный логин или пароль", "Ошибка входа",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -69,6 +69,9 @@
         <Button x:Name="ButBack" Content="Назад"  Style="{StaticResource ButtonStyle}" Click="ButBack_Click"/>
         <Button x:Name="ButUpd" Content="Обновить" Grid.Row="2"  Style="{StaticResource ButtonStyle}" Click="ButUpd_Click"/>
         <Button x:Name="ButDel" Content="Удалить" Grid.Row="2" Grid.Column="1"  Style="{StaticResource ButtonStyle}" Click="ButDel_Click"/>
+        <Button x:Name="ButHistory" Grid.Row="2" Grid.Column="2" Height="50" Style="{StaticResource ButtonStyle}" Click="ButHistory_Click">
+            <TextBlock Text="История изменений" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
         <StackPanel  Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <TextBox x:Name="TbSearch" Width="300" Height="30"/>
             <Button x:Name="ButSearch" Content="Поиск" Margin="10 0 50 0" Style="{StaticResource ButtonStyle}" Click="ButSearch_Click"/>

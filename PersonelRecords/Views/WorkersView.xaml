@@ -61,12 +61,12 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" IsReadOnly="True" Header="Номер" Width="Auto" />
                 <DataGridTextColumn Binding="{Binding FIO}" Header="ФИО" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding DateOfBirth, StringFormat=\{0:dd.MM.yyyy\},ConverterCulture=ru-RU}" Header="Дата рождения" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DateOfBirth, StringFormat=\{0:dd.MM.yyyy\}}" Header="Дата рождения" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Division}" Header="Подразделение" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Post}" Header="Должность" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding INN}" Header="ИНН" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Address}" Header="Адрес" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding DateOfReception, StringFormat=\{0:dd.MM.yyyy\},ConverterCulture=ru-RU}" Header="Дата приёма" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DateOfReception, StringFormat=\{0:dd.MM.yyyy\}}" Header="Дата приёма" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Family}" Header="Семья" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Education}" Header="Образование" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Awards}" Header="Награды" Width="*"/>

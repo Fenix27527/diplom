@@ -22,75 +22,86 @@ namespace PersonelRecords.Views
     {
         private MainWindow _mainWindow;
         private DataTable _stateTable;
-        private SqlDataAdapter _adapter;
+        // Поля для отслеживания изменений (кроме Id)
+        private readonly string[] _trackedFields = new[]
+        {
+            "Division", "Post", "NumberOfWorkers", "NumberOfHours", "Salary"
+        };
+
         public StateView(MainWindow mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
-            Loaded += StateView_Loaded;
         }
-        private void StateView_Loaded(object sender, RoutedEventArgs e)
+        public void LoadData()
         {
             try
             {
+                // Загружаем таблицу через ModuleDB
                 var (table, adapter) = ModuleDB.FillWithAdapter("SELECT * FROM State");
                 _stateTable = table;
-                _adapter = adapter;
-
-                // Настраиваем автоматическое создание команд (INSERT, UPDATE, DELETE)
-                SqlCommandBuilder builder = new SqlCommandBuilder(_adapter);
-                _adapter.InsertCommand = builder.GetInsertCommand();
-                _adapter.UpdateCommand = builder.GetUpdateCommand();
-                _adapter.DeleteCommand = builder.GetDeleteCommand();
 
                 TABLEState.ItemsSource = _stateTable.DefaultView;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка загрузки данных: " + ex.Message, "Ошибка");
+                MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        
 
-        private void UpdateDB()
-        {
-            try
-            {
-                _adapter.Update(_stateTable);
-            }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show("Ошибка сохранения: " + ex.Message, "Ошибка");
-            }
-        }
+      
         private void ButUpd_Click(object sender, RoutedEventArgs e)
         {
-            UpdateDB();
-            MessageBox.Show("Данные обновлены", "Успех!");
+            ModuleHistory.SaveTableChanges(
+                table: _stateTable,
+                tableName: "State",
+                historyTableName: "HISTORYState",
+                fieldsToTrack: _trackedFields,
+                currentUser: _mainWindow.CurrentUserFIO
+            );
         }
+        
 
         private void ButDel_Click(object sender, RoutedEventArgs e)
         {
-            if (TABLEState.SelectedItems == null || TABLEState.SelectedItems.Count == 0)
-                return;
-
-            var rowsDel = new List<DataRow>();
-            foreach (DataRowView rowView in TABLEState.SelectedItems)
-            {
-                rowsDel.Add(rowView.Row);
-            }
-
-            foreach (var row in rowsDel)
-            {
-                row.Delete();
-            }
+            ModuleHistory.DeleteSelectedRows(
+                grid: TABLEState,
+                table: _stateTable,
+                tableName: "State",
+                historyTableName: "HISTORYState",
+                fieldsToTrack: _trackedFields,
+                currentUser: _mainWindow.CurrentUserFIO
+            );
+        }
+        private void ButHistory_Click(object sender, RoutedEventArgs e)
+        {
+            var hw = new HistoryWindow("HISTORYState");
+            hw.Owner = Window.GetWindow(this);
+            hw.ShowDialog();
         }
         private void ButSearch_Click(object sender, RoutedEventArgs e)
         {
-            ModuleSearch.Filter(_stateTable, TbSearch.Text, "Division", "Post", "NumberOfWorkers", "NumberOfHours", "Salary");
+            try
+            {
+                ModuleSearch.Filter(_stateTable, TbSearch.Text,
+                    "Division", "Post", "NumberOfWorkers", "NumberOfHours", "Salary");
+
+                // ✅ Обновляем отображение
+                TABLEState.ItemsSource = null;
+                TABLEState.ItemsSource = _stateTable.DefaultView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка поиска: {ex.Message}", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void ButBack_Click(object sender, RoutedEventArgs e)
         {
             _mainWindow.ShowMenu();
         }
+
     }
 }

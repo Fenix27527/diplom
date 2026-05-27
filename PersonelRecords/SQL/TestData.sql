@@ -1,29 +1,38 @@
 USE PersonnelRecords;
 GO
 
+-- ==========================================
+-- 1. ОЧИСТКА ДАННЫХ (строго: сначала дочерние, потом родительские)
+-- ==========================================
 DELETE FROM Resumes;
 DELETE FROM Workers;
 DELETE FROM Vacancy;
 DELETE FROM State;
 DELETE FROM Logins;
-GO
+GO -- ⚠️ ОБЯЗАТЕЛЬНО! Завершает пакет, гарантирует очистку
 
+-- ==========================================
+-- 2. СБРОС СЧЁТЧИКОВ IDENTITY (следующая запись получит ID = 1)
+-- ==========================================
 DBCC CHECKIDENT ('Logins', RESEED, 0);
 DBCC CHECKIDENT ('State', RESEED, 0);
 DBCC CHECKIDENT ('Workers', RESEED, 0);
 DBCC CHECKIDENT ('Vacancy', RESEED, 0);
 DBCC CHECKIDENT ('Resumes', RESEED, 0);
+GO -- ⚠️ ОБЯЗАТЕЛЬНО!
+
+-- ==========================================
+-- 3. ЗАГРУЗКА ДАННЫХ (строго: сначала родители, потом дочерние)
+-- ==========================================
+SET DATEFORMAT ymd;
 GO
 
-SET DATEFORMAT ymd;
-
-
 INSERT INTO Logins (Login, FIO, Password, Email) VALUES
-('admin', 'Степанов В.С.', 'admin', 'admin@gmail.com'),
-('asd', 'Васильев А.В.', 'asd', 'asd@mail.ru'),
-('user_yas', 'Иванов А.А.', 'ячс', 'yas@mail.ru'),
-('manager1', 'Петров В.В.', 'цуапро', 'manager@gmail.com'),
-('hr_director', 'Никоненко М.С.', 'hr12345', 'hr@personnel.ru');
+(N'admin', N'Степанов В.С.', N'admin', N'admin@gmail.com'),
+(N'asd', N'Васильев А.В.', N'asd', N'asd@mail.ru'),
+(N'user_yas', N'Иванов А.А.', N'ячс', N'yas@mail.ru'),
+(N'manager1', N'Петров В.В.', N'цуапро', N'manager@gmail.com'),
+(N'hr_director', N'Никоненко М.С.', N'hr12345', N'hr@personnel.ru');
 GO
 
 INSERT INTO State (Division, Post, NumberOfWorkers, NumberOfHours, Salary) VALUES
@@ -56,16 +65,16 @@ INSERT INTO Vacancy (Post, Conditions) VALUES
 (N'Повар', N'Опыт работы не менее двух лет, образование в кулинарном техникуме, график 5/2'),
 (N'Библиотекарь', N'График 4/3'),
 (N'Системный администратор', N'График работы 5/2, опыт работы не менее двух лет'),
-(N'Разработчик 1С', N'Опыт работы не менее двух лет, удалённая работа')
+(N'Разработчик 1С', N'Опыт работы не менее двух лет, удалённая работа');
 GO
 
-INSERT INTO Resumes (FIO, Post, VacancyId, Link) VALUES
-(N'Мотыгин Т.Д.', N'Уборщик', 1, 'google.com'),
-(N'Степанов А.С.', N'Программист 1С', 5, 'google.com'),
-(N'Федоров И.И.', N'Повар', 2, 'google.com'),
-(N'Алексеева М.В.', N'Библиотекарь', 3, 'google.com'),
-(N'Григорьев К.С.', N'Системный администратор', 4, 'google.com'),
-(N'Николаев А.Н.', N'Программист 1С', 5, 'google.com'),
-(N'Васильев В.В.', N'Уборщик', 1, 'google.com'),
-(N'Михайлов М.М.', N'Повар', 2, 'google.com');
+INSERT INTO Resumes (FIO, VacancyId, Link) VALUES
+(N'Мотыгин Т.Д.', 1, 'google.com'),
+(N'Степанов А.С.', 5, 'google.com'),
+(N'Федоров И.И.', 2, 'google.com'),
+(N'Алексеева М.В.', 3, 'google.com'),
+(N'Григорьев К.С.', 4, 'google.com'),
+(N'Николаев А.Н.', 5, 'google.com'),
+(N'Васильев В.В.', 1, 'google.com'),
+(N'Михайлов М.М.', 2, 'google.com');
 GO

@@ -1,50 +1,69 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows;
 
 namespace PersonelRecords.Modules
 {
-    internal class ModuleDB
+    internal static class ModuleDB
     {
-        private static readonly string connectionString = ConfigurationManager.ConnectionStrings["CONNECTION"].ConnectionString;
-        public static string GetConnectionString() => connectionString;
+        // Строка подключения — одна на весь класс
+        private static readonly string _connStr =
+            ConfigurationManager.ConnectionStrings["CONNECTION"]?.ConnectionString
+            ?? throw new InvalidOperationException("Строка подключения 'CONNECTION' не найдена в App.config!");
 
+        public static string GetConnectionString() => _connStr;
+
+        // Вспомогательный метод: создаёт соединение (чтобы не дублировать код)
+        private static SqlConnection NewConn() => new SqlConnection(_connStr);
 
         public static DataTable ExecuteSelect(string sql)
         {
-            DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            var dt = new DataTable();
+            using (var conn = NewConn())
             {
-                SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
-                adapter.Fill(dt);
+                using (var adapter = new SqlDataAdapter(sql, conn))
+                {
+                    adapter.Fill(dt);
+                }
             }
             return dt;
         }
 
         public static int ExecuteNonQuery(string sql)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (var conn = NewConn())
             {
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                conn.Open();
-                return cmd.ExecuteNonQuery();
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    conn.Open();
+                    return cmd.ExecuteNonQuery();
+                }
             }
         }
 
         public static (DataTable Table, SqlDataAdapter Adapter) FillWithAdapter(string sql)
         {
-            DataTable dt = new DataTable();
-            SqlConnection conn = new SqlConnection(connectionString);
-            SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
-            adapter.Fill(dt);
-            return (dt, adapter);
+            var dt = new DataTable();
+            var conn = NewConn();
+            var adapter = new SqlDataAdapter(sql, conn);
+
+            try
+            {
+                adapter.Fill(dt);
+                return (dt, adapter);
+            }
+            catch
+            {
+                adapter.Dispose();
+                conn.Dispose();
+                throw;
+            }
+        }
+        // Загружает уникальные комбинации Подразделение-Должность из таблицы State
+        public static DataTable GetDivisionPostList()
+        {
+            return ExecuteSelect("SELECT DISTINCT Division, Post FROM State ORDER BY Division, Post");
         }
     }
 }
