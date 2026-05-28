@@ -3,19 +3,31 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personelrecords\\personelrecords\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|solutionrelative:personelrecords\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personelrecords\\personelrecords\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|solutionrelative:personelrecords\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personelrecords\\personelrecords\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|solutionrelative:personelrecords\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personelrecords\\personelrecords\\views\\workersview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|solutionrelative:personelrecords\\views\\workersview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personelrecords\\personelrecords\\modules\\modulehistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\personelrecords\\modules\\modulehistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|solutionrelative:personelrecords\\modules\\modulehistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personelrecords\\personelrecords\\views\\workersview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\personelrecords\\views\\workersview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|solutionrelative:personelrecords\\views\\workersview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personelrecords\\personelrecords\\modules\\moduledb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\personelrecords\\modules\\moduledb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonelRecords\\PersonelRecords.csproj|solutionrelative:personelrecords\\modules\\moduledb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -43,31 +55,69 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\App.config",
+              "RelativeDocumentMoniker": "PersonelRecords\\App.config",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\App.config",
+              "RelativeToolTip": "PersonelRecords\\App.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-05-28T09:44:55.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\App.xaml.cs",
+              "RelativeDocumentMoniker": "PersonelRecords\\App.xaml.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\App.xaml.cs",
+              "RelativeToolTip": "PersonelRecords\\App.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-28T09:44:49.29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "PersonelRecords\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\MainWindow.xaml.cs",
+              "RelativeToolTip": "PersonelRecords\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-28T09:43:38.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "WorkersView.xaml.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\Views\\WorkersView.xaml.cs",
               "RelativeDocumentMoniker": "PersonelRecords\\Views\\WorkersView.xaml.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\Views\\WorkersView.xaml.cs*",
-              "RelativeToolTip": "PersonelRecords\\Views\\WorkersView.xaml.cs*",
-              "ViewState": "AgIAACIAAAAAAAAAAAAowD8AAABjAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\Views\\WorkersView.xaml.cs",
+              "RelativeToolTip": "PersonelRecords\\Views\\WorkersView.xaml.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAowD8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-27T08:02:31.663Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "WorkersView.xaml",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\Views\\WorkersView.xaml",
               "RelativeDocumentMoniker": "PersonelRecords\\Views\\WorkersView.xaml",
               "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\Views\\WorkersView.xaml",
               "RelativeToolTip": "PersonelRecords\\Views\\WorkersView.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-27T08:04:33.102Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-27T08:04:33.102Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ModuleHistory.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\Modules\\ModuleHistory.cs",
               "RelativeDocumentMoniker": "PersonelRecords\\Modules\\ModuleHistory.cs",
@@ -75,12 +125,11 @@
               "RelativeToolTip": "PersonelRecords\\Modules\\ModuleHistory.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAYAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-27T08:01:30.988Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-27T08:01:30.988Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "ModuleDB.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonelRecords\\PersonelRecords\\Modules\\ModuleDB.cs",
               "RelativeDocumentMoniker": "PersonelRecords\\Modules\\ModuleDB.cs",
@@ -88,8 +137,7 @@
               "RelativeToolTip": "PersonelRecords\\Modules\\ModuleDB.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-27T08:01:28.653Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-27T08:01:28.653Z"
             }
           ]
         }

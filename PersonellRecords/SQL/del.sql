@@ -1,0 +1,8 @@
+USE master;
+GO
+
+ALTER DATABASE PersonnellRecords SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+
+DROP DATABASE PersonnellRecords;
+GO

@@ -1,0 +1,140 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personellrecords\\personellrecords\\views\\vacancyview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\views\\vacancyview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\personellrecords\\sql\\testdata.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\sql\\testdata.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\personellrecords\\sql\\init.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\sql\\init.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personellrecords\\personellrecords\\sql\\del.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\sql\\del.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\personellrecords\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\personellrecords\\views\\loginview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\views\\loginview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personellrecords\\personellrecords\\sql\\del.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\sql\\del.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personellrecords\\personellrecords\\sql\\testdata.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\sql\\testdata.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|c:\\users\\user\\desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\personellrecords\\personellrecords\\sql\\init.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame",
+      "RelativeMoniker": "D:0:0:{703984BB-DE15-431A-96E3-A8F04955F5B5}|PersonellRecords\\PersonellRecords.csproj|solutionrelative:personellrecords\\sql\\init.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{fbcae063-e2c0-4ab1-a516-996ea3dafb72}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VacancyView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\Views\\VacancyView.xaml.cs",
+              "RelativeDocumentMoniker": "PersonellRecords\\Views\\VacancyView.xaml.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\Views\\VacancyView.xaml.cs",
+              "RelativeToolTip": "PersonellRecords\\Views\\VacancyView.xaml.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAmwB0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-28T10:17:33.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TestData.sql ",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\SQL\\TestData.sql",
+              "RelativeDocumentMoniker": "PersonellRecords\\SQL\\TestData.sql",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\SQL\\TestData.sql",
+              "RelativeToolTip": "PersonellRecords\\SQL\\TestData.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-05-28T10:16:36.589Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\App.config",
+              "RelativeDocumentMoniker": "PersonellRecords\\App.config",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\App.config",
+              "RelativeToolTip": "PersonellRecords\\App.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAA==",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALSSURBVDhPrZJLSBtRFIb/uTOJ5tEBM0Zpd1qiC0cYkCbLFsSFYiOalbXSleO6daGbUqFLLd1qd0KWShdVk4VGFEQG62MRVLIQxhdWYhyjScxkHt3UQaO1Kv3gwrn3P\u002Bfncs4B/jPUZdDb29upqmpnOp2\u002BnlEEwzCora1FW1vbSUlJyXue51NXdcuwu7t7kOO4TzzPX9VvsL29jZOTE9TX15/zPD/Ksuw3QRASlzpzGWSzWVRVVaG5udkqvo1IJIJoNApJktwul6vP6/VmJUkKBwKBBACQ4oL7YJomMpkMIpEIksnkx0KhICqK4sFjDfHHVNM0zM3NYX9/X7TZbF/xGMOGhgaIoghRFNHT0wOPxwNN054AuP7DlpYWBAIBlJaWwm63g6ZpUJQ1M4uKigrwPG8dt9sN0zQtnQDAwcHBC5/P5yOEYG1tDbIsI5/PgxByq\u002BldkKOjo6c0TffF4/Hg8PAwBgYGMDY2BlmWYRgGCHlYV4hhGD8pivouCMJoKBSCqqqYmZnB\u002BPg4Njc3wTDWZt0LMjQ09GxhYeGDw\u002BE4z\u002BVyn\u002Bvq6qDrOlZXVyHLMmiaLq65E7K4uIhYLOafmJh4GY/HnyeTSei6DkVRkMlkHt5DlmUhSRKWlpZeHR4evkkkEtA0DYQQmKYJXdcfZEoaGxvBcRx2dnawtbUFQog13XQ6jePj47\u002Bu0G2Qrq4uhEIhCIKAsrIycByH8vJyXFxcYHp6GuFwGIVC4d6mxOl0Bh0OR5BhmCAhJFhdXf2uv78/5ff7kcvlMD8/j5GREaRSKVAU9c81Yjwez4\u002BrD1NTU\u002B58Pu/NZrOi3W6vWVlZwezsLFwuF1pbW3F2doaNjQ0r//T0FDabzbrfWLLKyspzAF/29vacAN6qqlqzvr6OWCwGnueXFUX5FY1GYRgGAIBlWTAMA9M0l4u9brC7uzs4OTlpNjU1me3t7WZHR8fr4pxifgOU5SIbsoJBiwAAAABJRU5ErkJggg==",
+              "WhenOpened": "2026-05-28T10:16:36.917Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "init.sql ",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\SQL\\init.sql",
+              "RelativeDocumentMoniker": "PersonellRecords\\SQL\\init.sql",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\SQL\\init.sql",
+              "RelativeToolTip": "PersonellRecords\\SQL\\init.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-05-28T10:16:36.917Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "del.sql ",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\SQL\\del.sql",
+              "RelativeDocumentMoniker": "PersonellRecords\\SQL\\del.sql",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\SQL\\del.sql",
+              "RelativeToolTip": "PersonellRecords\\SQL\\del.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-05-28T10:16:36.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LoginView.xaml",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\Views\\LoginView.xaml",
+              "RelativeDocumentMoniker": "PersonellRecords\\Views\\LoginView.xaml",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\u0434\u0438\u043F\u043B\u043E\u043C_\u043F\u0440\u0430\u043A\u0442\u0438\u043A\u0430\\PersonellRecords\\PersonellRecords\\Views\\LoginView.xaml",
+              "RelativeToolTip": "PersonellRecords\\Views\\LoginView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-28T10:16:36.919Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
